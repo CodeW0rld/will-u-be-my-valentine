@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Valentine</title>
+  <style>
+    body { font-family: Arial; background: #ffe6e6; text-align:center; padding:2em; }
+    input, button { padding:0.5em; margin:0.5em; font-size:1em; }
+    button { background:#ff4d6d; color:white; border:none; border-radius:4px; cursor:pointer; }
+    button:hover { background:#e03e5d; }
+    .result { margin-top:2em; padding:1em; border:1px solid #ff4d6d; border-radius:6px; background:#fff0f2; }
+  </style>
+</head>
+<body>
+  <h1>My Valentine Link Generator</h1>
+
+  <div id="inputForm">
+    <input type="text" id="fromName" placeholder="From (your name)">
+    <input type="text" id="toName" placeholder="To (valentine's name)">
+    <br>
+    <button onclick="generateLink()">Generate Link</button>
+  </div>
+
+  <div id="result" class="result" style="display:none;"></div>
+
+  <script>
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return { from: params.get('from'), to: params.get('to') };
+    }
+
+    window.onload = function() {
+      const {from, to} = getQueryParams();
+      if (from && to) {
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('result').innerHTML =
+          `<strong>From ${decodeURIComponent(from)} to ${decodeURIComponent(to)}, Happy Valentine's Day! ❤️</strong>`;
+        document.getElementById('inputForm').style.display = 'none';
+      }
+    }
+
+    function generateLink() {
+      const from = encodeURIComponent(document.getElementById('fromName').value.trim());
+      const to = encodeURIComponent(document.getElementById('toName').value.trim());
+      if (!from || !to) { alert('Enter both names'); return; }
+      const url = `${window.location.origin + window.location.pathname}?from=${from}&to=${to}`;
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        Your link:<br><a href="${url}" target="_blank">${url}</a><br><br>
+        <strong>From ${from} to ${to}, Happy Valentine's Day! ❤️</strong>
+      `;
+    }
+  </script>
+</body>
+</html>
